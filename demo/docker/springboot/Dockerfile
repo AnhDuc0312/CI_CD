@@ -5,10 +5,10 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy Gradle build output từ dự án
-COPY ../build/libs/cms-0.0.1-SNAPSHOT.jar /app/cms.jar
+COPY ../build/libs/demo-0.0.1-SNAPSHOT.jar /app/demo.jar
 
 # Expose cổng cho ứng dụng Spring Boot
 EXPOSE 8080
 
 # Chạy ứng dụng Spring Boot
-ENTRYPOINT ["java", "-jar", "/app/cms.jar"]
+ENTRYPOINT ["java", "-jar", "/app/demo.jar"]
