@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  # PostgreSQL service
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    container_name: my_postgres
+    environment:
+      POSTGRES_DB: DEMO                        # Tên của database
+      POSTGRES_USER: gbs                       # Tên người dùng PostgreSQL
+      POSTGRES_PASSWORD: A123456789            # Mật khẩu cho người dùng
+      PGDATA: /var/lib/postgresql/data/pgdata  # Thư mục lưu trữ database
+    ports:
+      - "5432:5432"                            # Kết nối PostgreSQL qua cổng 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Volume lưu trữ dữ liệu
+    networks:
+      - app-network                            # Kết nối với network chung
+    restart: unless-stopped                    # Khởi động lại nếu bị dừng
+
+  # Spring Boot service
+  springboot-app:
+    build:
+      context: .  # Chỉ định ngữ cảnh build là thư mục gốc của dự án
+      dockerfile: ./docker/springboot/Dockerfile
+    container_name: Springboot_DEMO
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/DEMO  # Kết nối PostgreSQL
+      SPRING_DATASOURCE_USERNAME: gbs                             # Username kết nối
+      SPRING_DATASOURCE_PASSWORD: A123456789                      # Password kết nối
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update                       # Tự động cập nhật schema
+      SPRING_JPA_SHOW_SQL: "true"                                 # Hiển thị các câu SQL
+      SPRING_PROFILES_ACTIVE: prod                                # Chạy với cấu hình profile production
+    ports:
+      - "8080:8080"                                               # Expose cổng của ứng dụng Spring Boot
+    depends_on:
+      - postgres                                                  # Đảm bảo PostgreSQL chạy trước
+    networks:
+      - app-network                                               # Kết nối với network chung
+    volumes:
+      - ./logs:/app/logs                                          # Volume lưu trữ logs
+    restart: unless-stopped                                       # Khởi động lại nếu bị dừng
+
+networks:
+  app-network:                                                    # Tạo network chung
+
+volumes:
+  postgres_data:                                                  # Volume lưu dữ liệu PostgreSQL
