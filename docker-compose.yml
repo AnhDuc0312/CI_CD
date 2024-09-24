@@ -23,7 +23,7 @@ services:
   springboot-app:
     build:
       context: .  # Chỉ định ngữ cảnh build là thư mục gốc của dự án
-      dockerfile: ./docker/springboot/Dockerfile
+      dockerfile: Dockerfile
     container_name: Springboot_DEMO
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/DEMO  # Kết nối PostgreSQL
