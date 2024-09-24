@@ -58,7 +58,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_PASSPHRASE }}
           script: |
-            docker pull your_dockerhub_username/demo:latest
+            docker pull anhduc12/demo:latest
             docker stop demo || true
             docker rm demo || true
-            docker run -d -p 8080:8080 --name demo your_dockerhub_username/demo:latest
+            docker run -d -p 8080:8080 --name demo anhduc12/demo:latest
