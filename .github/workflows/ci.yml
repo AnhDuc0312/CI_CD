@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set executable permission for gradlew
+        run: chmod +x gradlew  # Thiết lập quyền thực thi
+
       - name: Set up JDK 17
         uses: actions/setup-java@v2
         with:
